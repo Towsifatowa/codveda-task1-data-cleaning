@@ -1,175 +1,87 @@
-
-
 ```markdown
-# Task 1: Data Cleaning and Preprocessing
+# 📊 Sentiment Dataset: Data Cleaning & Preprocessing
 
-**Codveda Technologies — Data Analyst Internship**
+Welcome to **Task 1** of the Codveda Data Science project! This repository contains the code and documentation for cleaning, standardizing, and preprocessing a raw social media sentiment dataset, making it ready for exploratory data analysis (EDA) and machine learning modeling.
 
-This repository contains **Task 1** of the Codveda Data Analyst internship: cleaning and preprocessing a social-media sentiment dataset so it is accurate, consistent, and ready for analysis.
-
----
-
-## Overview
-
-The raw dataset contains social media posts with sentiment labels, timestamps, users, platforms, hashtags, engagement metrics, and country information.
-
-The original file had extra index columns, inconsistent text (extra spaces, mixed casing), float-typed counts, and duplicate rows after standardization. This notebook inspects data quality, applies a cleaning pipeline, and exports a cleaned CSV for further analysis.
-
-| Metric | Before | After |
-| --- | --- | --- |
-| Rows | 732 | 711 |
-| Columns | 15 | 13 |
-| Missing values | 0 | 0 |
-| Duplicate rows | 0 (raw) | 0 (after cleaning) |
+## 📌 Project Overview
+The objective of this task is to take a raw, messy dataset containing social media posts and transform it into a clean, structured, and reliable format. The pipeline handles missing values, duplicates, incorrect data types, and inconsistent categorical formatting.
 
 ---
 
-## Dataset
+## 📂 Dataset Details
+- **Original File:** `3) Sentiment dataset.csv`
+- **Cleaned File:** `Sentiment_Dataset_Cleaned.csv`
+- **Original Shape:** 732 rows × 15 columns
+- **Cleaned Shape:** 711 rows × 13 columns
 
-**Source file:** `3) Sentiment dataset.csv`
-
-| Column | Description |
-| --- | --- |
-| `Text` | Post content |
-| `Sentiment` | Sentiment / emotion label |
-| `Timestamp` | Date and time of the post |
-| `User` | Username |
-| `Platform` | Social platform (`Twitter`, `Instagram`, `Facebook`) |
-| `Hashtags` | Hashtags used in the post |
-| `Retweets` | Retweet / share count |
-| `Likes` | Like count |
-| `Country` | Country of the user |
-| `Year`, `Month`, `Day`, `Hour` | Time parts extracted from `Timestamp` |
-
-Two unused index columns (`Unnamed: 0.1`, `Unnamed: 0`) were dropped.
-
-### After cleaning — key distributions
-
-**Platform**
-
-| Platform | Posts |
-| --- | ---: |
-| Instagram | 258 |
-| Twitter | 243 |
-| Facebook | 231 |
-
-**Top countries**
-
-| Country | Posts |
-| --- | ---: |
-| USA | 188 |
-| UK | 143 |
-| Canada | 135 |
-| Australia | 75 |
-| India | 70 |
-
-Sentiment has **191 unique labels** after stripping whitespace and applying title case (e.g. Positive, Joy, Excitement, Contentment, Neutral).
+### Features Included:
+| Feature | Description |
+| :--- | :--- |
+| `Text` | The actual social media post content. |
+| `Sentiment` | The emotional tone of the post (e.g., Positive, Negative, Joy, etc.). |
+| `Timestamp` | Exact date and time of the post. |
+| `User` | The username/handle of the poster. |
+| `Platform` | Social media platform (Twitter, Instagram, Facebook). |
+| `Hashtags` | Tags associated with the post. |
+| `Retweets` / `Likes` | Engagement metrics. |
+| `Country` | Geographic location of the user. |
+| `Year`, `Month`, `Day`, `Hour` | Extracted temporal features for time-series analysis. |
 
 ---
 
-## Cleaning Pipeline
+## 🛠️ Data Cleaning Pipeline
+The following steps were executed in the Jupyter Notebook to clean the data:
 
-1. **Load and inspect**  
-   Shape, column names, data types, missing values, and duplicates.
-
-2. **Drop unused columns**  
-   Remove `Unnamed: 0` and `Unnamed: 0.1`.
-
-3. **Standardize column names**  
-   Strip spaces, convert to lowercase, replace spaces with underscores.
-
-4. **Parse timestamps**  
-   Convert `Timestamp` to datetime and re-extract `Year`, `Month`, `Day`, and `Hour`.
-
-5. **Standardize categorical text**  
-   Strip extra spaces and apply title case to `Platform`, `Sentiment`, and `Country` (e.g. `usa` → `Usa`).
-
-6. **Fix data types**  
-   Convert `Retweets` and `Likes` from float to integer. Keep date parts as integers.
-
-7. **Remove duplicates**  
-   Drop duplicate rows that appear after standardization.
-
-8. **Final quality check**  
-   Confirm no missing values, no duplicates, and a consistent schema.
-
-9. **Export**  
-   Save the cleaned file as `Sentiment_Dataset_Cleaned.csv`.
+1. **Initial Inspection:** Analyzed the dataset shape, columns, data types, and checked for initial missing values and duplicates.
+2. **Dropping Unnecessary Columns:** Removed index artifacts (`Unnamed: 0.1`, `Unnamed: 0`) that were carried over from previous CSV exports.
+3. **Column Standardization:** Stripped whitespace and converted all column names to lowercase for uniformity.
+4. **Datetime Parsing & Feature Extraction:** 
+   - Converted the `Timestamp` column to standard `datetime64` objects.
+   - Extracted `Year`, `Month`, `Day`, and `Hour` into separate integer columns for easier temporal analysis.
+5. **Categorical Standardization:** Applied `.strip()` and `.title()` to `Platform`, `Sentiment`, and `Country` columns to fix casing issues (e.g., converting "usa" to "Usa", "twitter" to "Twitter").
+6. **Data Type Correction:** Ensured numerical columns (`Retweets`, `Likes`) and temporal columns (`Year`, `Month`, `Day`, `Hour`) are strictly formatted as `int64`.
+7. **Deduplication:** Identified and removed duplicate rows to ensure data integrity (reduced dataset from 732 to 711 rows).
 
 ---
 
-## Project Structure
+## 💻 Tech Stack & Dependencies
+- **Language:** Python 3.x
+- **Core Library:** `pandas`
+- **Environment:** Jupyter Notebook
 
-```text
-├── Task_01_codveda.ipynb              # Cleaning notebook
-├── 3) Sentiment dataset.csv           # Original dataset
-├── Sentiment_Dataset_Cleaned.csv      # Cleaned output
-└── README.md
-```
-
----
-
-## Tools
-
-- **Python 3**
-- **pandas** — loading, cleaning, type conversion, and export
-- **Jupyter Notebook** — exploration, documentation, and quality checks
-
----
-
-## How to Run
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>
-```
-
-2. Install pandas (if needed):
-
+### Installation
+To run this project locally, ensure you have Python installed and install the required dependencies:
 ```bash
 pip install pandas jupyter
 ```
 
-3. Open the notebook:
+---
 
-```bash
-jupyter notebook Task_01_codveda.ipynb
-```
-
-4. Update the CSV path in the load cell if your file is in a different location, then run all cells.
-
-The cleaned dataset is written to:
-
-```text
-Sentiment_Dataset_Cleaned.csv
-```
+## 🚀 How to Run
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/codveda-task-1.git
+   cd codveda-task-1
+   ```
+2. Open the Jupyter Notebook:
+   ```bash
+   jupyter notebook Task_01_codveda.ipynb
+   ```
+3. Run all cells sequentially. The cleaned dataset will be automatically exported as `Sentiment_Dataset_Cleaned.csv` in your working directory.
 
 ---
 
-## Results
-
-- Removed 2 unused index columns  
-- Standardized platform, sentiment, and country labels  
-- Converted timestamps and engagement counts to proper types  
-- Removed 21 duplicate rows after cleaning (`732 → 711`)  
-- Final dataset: **711 rows × 13 columns**, 0 missing values, 0 duplicates  
-
-The cleaned file is ready for exploratory analysis, dashboards, and reporting.
+## 📈 Final Data Quality Check
+After executing the pipeline, the final dataset boasts:
+- ✅ **0 Missing Values**
+- ✅ **0 Duplicate Rows**
+- ✅ **Standardized Data Types**
+- ✅ **Consistent Categorical Formatting**
 
 ---
 
-## Author
+## 📬 Contact / Author
+**Prepared for:** Codveda Task 1  
+**Author:** [Towsifa Towa]  
+**Date:** [28/8/2026]  
 
-**[Towsifa Towa]**  
-Codveda Technologies — Data Analyst Intern  
-
----
-
-## License
-
-This project is for internship / educational use.
-```
-
-Replace `<your-username>`, `<your-repo>`, `[Your Name]`, and the notebook filename with your real details before you push.
